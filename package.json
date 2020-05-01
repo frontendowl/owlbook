@@ -1,0 +1,27 @@
+{
+  "name": "sovabook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "stat/*"
+    ]
+  },
+  "author": "frontendowl",
+  "license": "MIT",
+  "dependencies": {
+    "brew-install": "^0.1.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "fs-extra": "^8.1.0",
+    "node-calibre": "^2.1.1",
+    "nodemailer": "^6.4.2",
+    "nodemon": "^2.0.2",
+    "path": "^0.12.7"
+  }
+}

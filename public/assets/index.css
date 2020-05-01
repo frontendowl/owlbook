@@ -1,0 +1,135 @@
+body {
+  margin: 0;
+  padding: 1rem 0 0;
+  box-sizing: border-box;
+  background: linear-gradient(
+    225deg,
+    rgba(180, 236, 255, 1) 0%,
+    rgba(255, 180, 223, 1) 50%,
+    rgba(255, 251, 162, 1) 100%
+  );
+  color: rgb(4, 36, 108);
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  grid-template-columns: 100vw;
+  grid-template-rows: auto auto 1fr auto;
+  align-items: start;
+  font-family: "Monserrat", sans-serif;
+}
+
+h4 {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin: 2rem 1rem 1rem;
+}
+
+.container {
+  margin: 0.25rem 1rem;
+  padding: 2.5rem 2rem;
+  width: 320px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  justify-self: center;
+
+  display: grid;
+}
+
+.upload-label,
+.button {
+  display: block;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 1rem;
+  margin: 0;
+  background-color: rgb(4, 36, 108);
+  color: rgb(255, 255, 255);
+}
+.file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.button {
+  border-top: white dashed 1px;
+  border-radius: 0 0 6px 6px;
+  font: inherit;
+
+  position: relative;
+}
+
+.upload-label {
+  border-bottom: white dashed 1px;
+  border-radius: 6px 6px 0 0;
+}
+.upload-label:hover,
+.button:hover {
+  background-color: rgb(8, 72, 221);
+}
+.file:disabled + .upload-label {
+  cursor: default;
+}
+.file:focus + .upload-label,
+.button:focus {
+  background-color: rgb(8, 72, 221);
+  box-shadow: 0 0 0 -1px rgb(8, 72, 221);
+  outline: none;
+  box-shadow: rgb(4, 36, 108) 0 0 0 6px inset;
+}
+.button:disabled {
+  background-color: rgb(132, 150, 190);
+  color: #eee;
+  cursor: default;
+}
+.upload-label.book-is-chosen {
+  background-color: rgb(132, 150, 190) !important;
+  color: rgb(4, 36, 108);
+}
+
+.status {
+  margin: 0.25rem 1rem;
+  padding: 0;
+  width: 320px;
+  box-sizing: border-box;
+  text-align: center;
+  justify-self: center;
+}
+#status-img,
+#status-uploading-img {
+  width: 320px;
+  height: 320px;
+}
+@keyframes play {
+  100% {
+    background-position: -2560px 0;
+  }
+}
+#status-uploading-img {
+  animation: play 1s steps(8) infinite;
+  background: transparent url("./images/uploading.svg") 0 0 / 2560px 320px
+    no-repeat;
+}
+
+.hidden {
+  display: none;
+}
+
+footer {
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.5rem;
+  font-weight: 200;
+  border-top: rgb(4, 36, 108) dotted 1px;
+}
+
