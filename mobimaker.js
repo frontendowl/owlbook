@@ -1,5 +1,9 @@
 const USER = require("./config.js");
 
+const sqlite3 = require("sqlite3").verbose();
+const dbFile = "./book_status.db";
+const sqlUpdate = "UPDATE Convertions SET step = ?, msg = ? WHERE file_id = ?";
+
 const fse = require("fs-extra");
 
 const { Calibre } = require("node-calibre");
@@ -10,12 +14,15 @@ const transport = mailer.createTransport(USER.mailerSettings);
 
 async function convert(file) {
   try {
-
-    const status = await fse.readJson(file.statusPath);
+    const db = new sqlite3.Database(dbFile);
+    let step = 0;
     const updateStatus = msg => {
-      status.step++;
-      status.msg = msg;
-      fse.writeJson(file.statusPath, status, { spaces: 2 });
+      step++;
+      db.run(sqlUpdate, [step, msg, file.id], err => {
+        if (err) {
+          return console.error("SQL update error:\n", err);
+        }
+      });
     };
 
     const epubPath = file.tempFilePath + ".epub";

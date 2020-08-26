@@ -1,8 +1,13 @@
 const express = require("express");
 const fileUpload = require("express-fileupload");
 
+const sqlite3 = require("sqlite3").verbose();
+const dbFile = "./book_status.db";
+const sqlNewConvertion =
+  "INSERT INTO Convertions (file_id, step, msg) VALUES(?, ?, ?)";
+const sqlBookStatus = "SELECT * FROM Convertions WHERE file_id = ?";
+
 const path = require("path");
-const fse = require("fs-extra");
 
 const mobimaker = require("./mobimaker.js");
 const convert = mobimaker.convert;
@@ -25,34 +30,38 @@ app.get("/", (req, res) => {
 
 app.post("/tomobi", (req, res) => {
   const file = req.files.epubFile;
-  const fileId = path.basename(file.tempFilePath);
-  const statusPath = path.join(__dirname, "stat/", fileId + ".json");
-  file.statusPath = statusPath;
+  file.id = path.basename(file.tempFilePath);
 
-  const curStatus = { step: 0, msg: "uploading" };
-  fse
-    .writeJson(statusPath, curStatus, { spaces: 2 })
-    .then(() => {
-      convert(file);
-      res.json({ id: fileId });
-    })
-    .catch(err => {
-      console.error("\nSERVER: ERROR with creating JSON\n", err);
+  const db = new sqlite3.Database(dbFile);
+
+  db.run(sqlNewConvertion, [file.id, 0, "uploading"], err => {
+    if (err) {
+      console.error("\nS: ERROR with adding book to the Database\n", err);
       res.send("OOPS, something went wrong.\nPls, try again later");
-    });
+    }
+    convert(file);
+
+    res.json({ id: file.id });
+  });
+
+  db.close();
 });
 
 app.get("/status/:id", (req, res) => {
   const id = req.params.id;
-  const statPath = path.join(__dirname, "/stat/", id + ".json");
-
-  fse
-    .readJson(statPath)
-    .then(status => res.json(status))
-    .catch(err => {
-      console.error("\nSERVER: ERROR with status reading of", id, "\n", err);
+  const db = new sqlite3.Database(dbFile);
+  db.get(sqlBookStatus, id, (err, data) => {
+    if (err) {
+      console.error(err.message);
       res.json({ error: true });
-    });
+    } else if (data) {
+      res.json(data);
+    } else {
+      console.error(`\nS: file id ${id} not found`);
+      res.send("Can't read status: book id not found");
+    }
+  });
+  db.close();
 });
 
 app.listen(port, () => {
