@@ -5,12 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "stat/*"
-    ]
+    "start": "npx nodemon server.js"
   },
   "author": "frontendowl",
   "license": "MIT",
