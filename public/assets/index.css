@@ -1,14 +1,21 @@
+:root {
+  --navy: rgb(4, 36, 108);
+  --cool-grey: rgb(132, 150, 190);
+  --blue: rgb(8, 72, 221);
+  --lighter: rgba(255, 255, 255, 0.4);
+}
+
 body {
   margin: 0;
   padding: 1rem 0 0;
   box-sizing: border-box;
   background: linear-gradient(
     225deg,
-    rgba(180, 236, 255, 1) 0%,
-    rgba(255, 180, 223, 1) 50%,
-    rgba(255, 251, 162, 1) 100%
+    rgb(180, 236, 255) 0%,
+    rgb(255, 180, 223) 50%,
+    rgb(255, 251, 162) 100%
   );
-  color: rgb(4, 36, 108);
+  color: var(--navy);
   width: 100vw;
   height: 100vh;
 
@@ -35,7 +42,7 @@ h4 {
   box-sizing: border-box;
   text-align: center;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--lighter);
   justify-self: center;
 
   display: grid;
@@ -48,8 +55,9 @@ h4 {
   cursor: pointer;
   padding: 1rem;
   margin: 0;
-  background-color: rgb(4, 36, 108);
-  color: rgb(255, 255, 255);
+  background-color: var(--navy);
+  color: white;
+  border: 1px dashed transparent;
 }
 .file {
   width: 0.1px;
@@ -60,7 +68,7 @@ h4 {
   z-index: -1;
 }
 .button {
-  border-top: white dashed 1px;
+  border-top-color: white;
   border-radius: 0 0 6px 6px;
   font: inherit;
 
@@ -68,31 +76,31 @@ h4 {
 }
 
 .upload-label {
-  border-bottom: white dashed 1px;
+  border-bottom-color: white;
   border-radius: 6px 6px 0 0;
 }
 .upload-label:hover,
 .button:hover {
-  background-color: rgb(8, 72, 221);
+  background-color: var(--blue);
 }
 .file:disabled + .upload-label {
   cursor: default;
 }
 .file:focus + .upload-label,
 .button:focus {
-  background-color: rgb(8, 72, 221);
-  box-shadow: 0 0 0 -1px rgb(8, 72, 221);
+  background-color: var(--blue);
+  box-shadow: 0 0 0 -1px var(--blue);
   outline: none;
-  box-shadow: rgb(4, 36, 108) 0 0 0 6px inset;
+  box-shadow: var(--navy) 0 0 0 6px inset;
 }
 .button:disabled {
-  background-color: rgb(132, 150, 190);
+  background-color: var(--cool-grey);
   color: #eee;
   cursor: default;
 }
 .upload-label.book-is-chosen {
-  background-color: rgb(132, 150, 190) !important;
-  color: rgb(4, 36, 108);
+  background-color: var(--cool-grey) !important;
+  color: var(--navy);
 }
 
 .status {
@@ -125,11 +133,10 @@ h4 {
 
 footer {
   margin-top: 1rem;
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--lighter);
   text-align: center;
   font-size: 0.75rem;
   line-height: 1.5rem;
   font-weight: 200;
-  border-top: rgb(4, 36, 108) dotted 1px;
+  border-top: var(--navy) dotted 1px;
 }
-
