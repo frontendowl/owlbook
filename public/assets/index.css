@@ -17,7 +17,7 @@ body {
   );
   color: var(--navy);
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 
   display: grid;
   grid-template-columns: 100vw;
@@ -103,7 +103,7 @@ h4 {
   color: var(--navy);
 }
 
-.status {
+#book-status {
   margin: 0.25rem 1rem;
   padding: 0;
   width: 320px;
@@ -111,8 +111,7 @@ h4 {
   text-align: center;
   justify-self: center;
 }
-#status-img,
-#status-uploading-img {
+#status-img-container {
   width: 320px;
   height: 320px;
 }

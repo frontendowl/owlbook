@@ -3,14 +3,18 @@ const input = document.getElementById("file-upload"),
   label = document.querySelector("label.upload-label"),
   button = document.querySelector(".button"),
   statBar = document.getElementById("book-status"),
-  statImg = document.getElementById("status-img"),
-  statUploadingImg = document.getElementById("status-uploading-img");
+  statImgContainer = document.getElementById("status-img-container");
 
 const STATUS_IMG = [
-  0,
   {
-    link: "./assets/images/converting.svg",
-    alt: "converting"
+    link: "./assets/images/uploading.svg",
+    alt: "uploading",
+    animated: true
+  },
+  {
+    link: "./assets/images/converting_sprite.svg",
+    alt: "converting",
+    animated: true
   },
   {
     link: "./assets/images/sending.svg",
@@ -25,10 +29,10 @@ const STATUS_IMG = [
 const lblDef = label.textContent;
 
 function upload(file) {
-  console.log("\ntrying to upload file...");
   const data = new FormData();
   data.append("epubFile", file);
-  statUploadingImg.classList.remove("hidden");
+
+  updateStatusImg(STATUS_IMG[0]);
 
   fetch("/tomobi", {
     method: "POST",
@@ -37,7 +41,6 @@ function upload(file) {
     .then(response => response.json())
     .then(data => {
       const statLink = "/status/" + data.id;
-      console.log("\nconvertion id: ", data.id);
       return statLink;
     })
     .then(statLink => {
@@ -51,21 +54,14 @@ function whereIsMyBook(statusLink, prevStep) {
     .then(res => res.json())
     .then(status => {
       if (status.error) {
-        whereIsMyBook(statusLink, curStep);
+        whereIsMyBook(statusLink, prevStep);
         return;
       }
       const curStep = status.step;
 
       if (prevStep < curStep) {
-        const curState = status.msg;
-        console.log("\nnew step info:", curStep, curState);
-        if (prevStep === 0) {
-          statUploadingImg.classList.add("hidden");
-          statImg.classList.remove("hidden");
-        }
-        statImg.alt = STATUS_IMG[curStep].alt;
-        statImg.src = STATUS_IMG[curStep].link;
-        label.textContent = curState;
+        updateStatusImg(STATUS_IMG[curStep]);
+        label.textContent = status.msg;
       }
 
       if (curStep < 3) {
@@ -111,9 +107,21 @@ function setWaitingForBook(msg) {
 }
 
 function bookIsConverting() {
-  statImg.classList.add("hidden");
+  statImgContainer.classList.remove("hidden");
   button.disabled = true;
   input.disabled = true;
   label.textContent = "Uploading...";
   button.textContent = "please, wait";
+}
+
+function updateStatusImg(statusImg) {
+  statImgContainer.removeAttribute("style");
+  if (statusImg.animated) {
+    statImgContainer.style.animation = "play 1s steps(8) infinite";
+    statImgContainer.style.background = `transparent url(${statusImg.link}) 0 0 / 2560px 320px
+    no-repeat`;
+  } else {
+    statImgContainer.style.background = `transparent url(${statusImg.link}) 0 0 / 320px 320px no-repeat`;
+  }
+  statImgContainer.title = statusImg.alt;
 }
